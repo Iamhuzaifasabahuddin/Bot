@@ -6,10 +6,9 @@ import random
 import requests
 import json
 
-
 intents = discord.Intents.default()
 intents.message_content = True
-bot = commands.Bot(command_prefix=['!', "$"], intents=intents)
+bot = commands.Bot(command_prefix=['!', "$", '@'], intents=intents)
 
 
 def quote_generator():
@@ -31,8 +30,16 @@ async def hello(ctx):
 
 
 @bot.command()
-async def ping(ctx):
-    await ctx.send('pong')
+async def contact(ctx):
+    """Returns Contact details"""
+    embed = discord.Embed(title="Contact Details: ")
+    embed.add_field(name="Github", value="[GITHUB]"
+                                         "(https://github.com/Iamhuzaifasabahuddin/Python-Personal-Projects)"
+                    , inline=False)
+    embed.add_field(name="LinkedIn", value="[LinkedIn](https://www.linkedin.com/in/huzaifa-sabah-uddin/",
+                    inline=False)
+    embed.add_field(name="Email", value="Huzaifasabah@gmail.com", inline=False)
+    await ctx.send(embed=embed)
 
 
 @bot.command()
@@ -53,7 +60,8 @@ async def random_(ctx, start: int = None, end: int = None):
 
 
 @bot.command()
-async def search(ctx, query, number):
+async def getrecipe(ctx, query, number):
+    """Searches for desired number of recipes of any given product"""
     url = f"https://api.edamam.com/search"
 
     params = {
@@ -67,16 +75,13 @@ async def search(ctx, query, number):
 
     for recipe in data['hits']:
         recipe = recipe['recipe']
-
-        # Create an embed message
         embed = discord.Embed(title=recipe['label'], url=recipe['url'])
         embed.add_field(name="Calories", value=recipe['calories'])
-        embed.add_field(name="Cautions", value=", ".join(recipe['cautions']))
         embed.add_field(name="Diet Labels", value=", ".join(recipe['dietLabels']))
         embed.add_field(name="Health Labels", value=", ".join(recipe['healthLabels']))
-
         ingredients = "\n".join(recipe['ingredientLines'])
         embed.add_field(name="Ingredients", value=ingredients, inline=False)
         await ctx.send(embed=embed)
+
 
 bot.run(os.environ["DISCORD_TOKEN"])
