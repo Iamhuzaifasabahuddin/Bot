@@ -23,7 +23,7 @@ async def ping(ctx):
     await ctx.send('pong')
 
 @bot.command()
-async def random(ctx, start: int, end: int):
+async def random_(ctx, start: int, end: int):
     random_generated = random.randrange(start, end+1)
     await ctx.send(f"Random Number Generated is: {random_generated}!")
 
