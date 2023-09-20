@@ -67,14 +67,16 @@ async def search(ctx, query, number):
 
     for recipe in data['hits']:
         recipe = recipe['recipe']
-        print("Title:", recipe['label'])
-        print("Calories:", recipe['calories'])
-        print("Cautions:", recipe['cautions'])
-        print("Diet Labels:", recipe['dietLabels'])
-        print("Health Labels:", recipe['healthLabels'])
-        print("URL:", recipe['url'])
-        print("Ingredients:", recipe['ingredientLines'])
-        print()
 
+        # Create an embed message
+        embed = discord.Embed(title=recipe['label'], url=recipe['url'])
+        embed.add_field(name="Calories", value=recipe['calories'])
+        embed.add_field(name="Cautions", value=", ".join(recipe['cautions']))
+        embed.add_field(name="Diet Labels", value=", ".join(recipe['dietLabels']))
+        embed.add_field(name="Health Labels", value=", ".join(recipe['healthLabels']))
+
+        ingredients = "\n".join(recipe['ingredientLines'])
+        embed.add_field(name="Ingredients", value=ingredients, inline=False)
+        await ctx.send(embed=embed)
 
 bot.run(os.environ["DISCORD_TOKEN"])
