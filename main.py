@@ -42,7 +42,7 @@ async def inspired(ctx):
 
 
 @bot.command()
-async def random_(ctx, start: int, end: int):
+async def random_(ctx, start: int = None, end: int = None):
     """Generates a random number from user provided range"""
     if start is not None and end is not None:
         random_generated = random.randrange(start, end + 1)
