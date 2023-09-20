@@ -6,6 +6,7 @@ import random
 import requests
 import json
 
+
 intents = discord.Intents.default()
 intents.message_content = True
 bot = commands.Bot(command_prefix=['!', "$"], intents=intents)
@@ -49,6 +50,31 @@ async def random_(ctx, start: int = None, end: int = None):
         await ctx.send(f"Random generated number is: {random_generated}!")
     elif start is None or end is None:
         await ctx.send(f"Enter a range to generate random number!")
+
+
+@bot.command()
+async def search(ctx, query, number):
+    url = f"https://api.edamam.com/search"
+
+    params = {
+        "app_id": os.environ["APP_ID"],
+        "app_key": os.environ["API_KEY"],
+        "q": query,
+        "to": number
+    }
+    response = requests.get(url, params=params)
+    data = response.json()
+
+    for recipe in data['hits']:
+        recipe = recipe['recipe']
+        print("Title:", recipe['label'])
+        print("Calories:", recipe['calories'])
+        print("Cautions:", recipe['cautions'])
+        print("Diet Labels:", recipe['dietLabels'])
+        print("Health Labels:", recipe['healthLabels'])
+        print("URL:", recipe['url'])
+        print("Ingredients:", recipe['ingredientLines'])
+        print()
 
 
 bot.run(os.environ["DISCORD_TOKEN"])
