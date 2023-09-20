@@ -38,7 +38,7 @@ async def contact(ctx):
                     , inline=False)
     embed.add_field(name="LinkedIn Profile", value="[LinkedIn](https://www.linkedin.com/in/huzaifa-sabah-uddin/)",
                     inline=False)
-    embed.add_field(name="Email Address", value="[EMAIL](Huzaifasabah@gmail.com)", inline=False)
+    embed.add_field(name="Email Address", value="[EMAIL](mailto:Huzaifasabah@gmail.com)", inline=False)
     await ctx.send(embed=embed)
 
 
@@ -60,7 +60,7 @@ async def random_(ctx, start: int = None, end: int = None):
 
 
 @bot.command()
-async def getrecipe(ctx, *, query, number):
+async def getrecipe(ctx, *, query: str, number: int):
     """Searches for the desired number of recipes for a given product"""
     # Check if there is at least one word in the query (at least one space)
     if not any(c.isalpha() for c in query):
