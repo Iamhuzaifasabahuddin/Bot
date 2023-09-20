@@ -15,6 +15,10 @@ async def on_ready():
     print(f"Logged in as {bot.user}")
 
 @bot.command()
+async def hello(ctx):
+    await ctx.send(f"Hello {str(bot.user)}")
+
+@bot.command()
 async def ping(ctx):
     await ctx.send('pong')
 
