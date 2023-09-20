@@ -34,7 +34,7 @@ async def contact(ctx):
     """Returns Contact details"""
     embed = discord.Embed(title="Contact Details: ")
     embed.add_field(name="Github Repository", value="[GITHUB]"
-                                         "(https://github.com/Iamhuzaifasabahuddin/Python-Personal-Projects)"
+                                                    "(https://github.com/Iamhuzaifasabahuddin/Python-Personal-Projects)"
                     , inline=False)
     embed.add_field(name="LinkedIn Profile", value="[LinkedIn](https://www.linkedin.com/in/huzaifa-sabah-uddin/)",
                     inline=False)
@@ -60,32 +60,36 @@ async def random_(ctx, start: int = None, end: int = None):
 
 
 @bot.command()
-async def getrecipe(ctx, *, query: str, number: int):
+async def getrecipe(ctx, *, query_and_nums: str):
     """Searches for the desired number of recipes for a given product"""
-    # Check if there is at least one word in the query (at least one space)
+
+    query = " ".join(query_and_nums.split()[:-1])
+    nums = query_and_nums.split()[-1] if query_and_nums.split()[-1].isdigit() else 5
     if not any(c.isalpha() for c in query):
         await ctx.send("Please provide a more descriptive recipe query with at least one word.")
         return
-
     url = f"https://api.edamam.com/search"
-
     params = {
         "app_id": os.environ["APP_ID"],
         "app_key": os.environ["API_KEY"],
         "q": query,
-        "to": number
+        "to": nums
     }
     response = requests.get(url, params=params)
     data = response.json()
 
     for recipe in data['hits']:
         recipe = recipe['recipe']
-        embed = discord.Embed(title=recipe['label'], url=recipe['url'])
-        embed.add_field(name="Calories", value=recipe['calories'])
-        embed.add_field(name="Diet Labels", value=", ".join(recipe['dietLabels']))
-        embed.add_field(name="Health Labels", value=", ".join(recipe['healthLabels']))
-        ingredients = "\n".join(recipe['ingredientLines'])
-        embed.add_field(name="Ingredients", value=ingredients, inline=False)
+        embed = discord.Embed(title=f"_{recipe['label']}_", url=recipe['url'])
+        embed.add_field(name="_Calories_", value=round(recipe['calories'], 2))
+        embed.add_field(name="_Diet Labels_", value=", ".join(recipe['dietLabels']))
+        embed.add_field(name="_Health Labels_", value=", ".join(recipe['healthLabels']))
+        ingredients = recipe['ingredientLines']
+
+        embed.add_field(name="_Ingredients List_: ", value="")
+        for i, ingredient in enumerate(ingredients, start=1):
+            embed.add_field(name=f"{i}) {ingredient}", value="\u200b", inline=False)
+
         await ctx.send(embed=embed)
 
 
