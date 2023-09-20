@@ -33,12 +33,12 @@ async def hello(ctx):
 async def contact(ctx):
     """Returns Contact details"""
     embed = discord.Embed(title="Contact Details: ")
-    embed.add_field(name="Github", value="[GITHUB]"
+    embed.add_field(name="Github Repository", value="[GITHUB]"
                                          "(https://github.com/Iamhuzaifasabahuddin/Python-Personal-Projects)"
                     , inline=False)
-    embed.add_field(name="LinkedIn", value="[LinkedIn](https://www.linkedin.com/in/huzaifa-sabah-uddin/",
+    embed.add_field(name="LinkedIn Profile", value="[LinkedIn](https://www.linkedin.com/in/huzaifa-sabah-uddin/)",
                     inline=False)
-    embed.add_field(name="Email", value="Huzaifasabah@gmail.com", inline=False)
+    embed.add_field(name="Email Address", value="[EMAIL](Huzaifasabah@gmail.com)", inline=False)
     await ctx.send(embed=embed)
 
 
@@ -60,8 +60,13 @@ async def random_(ctx, start: int = None, end: int = None):
 
 
 @bot.command()
-async def getrecipe(ctx, query, number):
-    """Searches for desired number of recipes of any given product"""
+async def getrecipe(ctx, *, query, number):
+    """Searches for the desired number of recipes for a given product"""
+    # Check if there is at least one word in the query (at least one space)
+    if not any(c.isalpha() for c in query):
+        await ctx.send("Please provide a more descriptive recipe query with at least one word.")
+        return
+
     url = f"https://api.edamam.com/search"
 
     params = {
@@ -84,4 +89,5 @@ async def getrecipe(ctx, query, number):
         await ctx.send(embed=embed)
 
 
-bot.run(os.environ["DISCORD_TOKEN"])
+if __name__ == '__main__':
+    bot.run(os.environ["DISCORD_TOKEN"])
