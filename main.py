@@ -20,8 +20,14 @@ def quote_generator():
 
 @bot.event
 async def on_ready():
-    print(f"Logged in as {bot.user}")
-
+    # This function will be called when the bot is ready
+    print(f"Logged in as {bot.user.name}")
+    guild_id = 1134680859178451025
+    guild = bot.get_guild(guild_id)
+    if guild is not None:
+        channel = guild.get_channel(1134680859178451028)
+        if channel is not None:
+            await channel.send("Bot is now online and ready!")
 
 @bot.command()
 async def hello(ctx):
@@ -38,7 +44,7 @@ async def contact(ctx):
                     , inline=False)
     embed.add_field(name="LinkedIn Profile", value="[LinkedIn](https://www.linkedin.com/in/huzaifa-sabah-uddin/)",
                     inline=False)
-    embed.add_field(name="Email Address", value="[EMAIL](mailto:Huzaifasabah@gmail.com)", inline=False)
+    embed.add_field(name="Email Address", value="Huzaifasabah@gmail.com", inline=False)
     await ctx.send(embed=embed)
 
 
@@ -86,12 +92,18 @@ async def getrecipe(ctx, *, query_and_nums: str):
         embed.add_field(name="_Health Labels_", value=", ".join(recipe['healthLabels']))
         ingredients = recipe['ingredientLines']
 
-        embed.add_field(name="_Ingredients List_: ", value="")
-        for i, ingredient in enumerate(ingredients, start=1):
-            embed.add_field(name=f"{i}) {ingredient}", value="\u200b", inline=False)
+        # embed.add_field(name="_Ingredients List_: ", value="")
+        # for i, ingredient in enumerate(ingredients, start=1):
+        #     embed.add_field(name=f"{i}) {ingredient}", value="\u200b", inline=False)
+
+        ingredients_list = ", ".join([f"{i}) {ingredient}" for i, ingredient in enumerate(ingredients, start=1)])
+        embed.add_field(name="_Ingredients List_:", value=ingredients_list, inline=False)
 
         await ctx.send(embed=embed)
 
+@bot.command()
+async def ily(ctx):
+    await ctx.author.send(f" <@{1154756034473234492}> I LOVE YOU BABY!")
 
 if __name__ == '__main__':
     bot.run(os.environ["DISCORD_TOKEN"])
