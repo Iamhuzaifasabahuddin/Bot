@@ -22,10 +22,10 @@ def quote_generator():
 async def on_ready():
     # This function will be called when the bot is ready
     print(f"Logged in as {bot.user.name}")
-    guild_id = 1134680859178451025
+    guild_id = os.environ["SERVER_ID"]
     guild = bot.get_guild(guild_id)
     if guild is not None:
-        channel = guild.get_channel(1134680859178451028)
+        channel = guild.get_channel(os.environ["CHANNEL_ID"])
         if channel is not None:
             await channel.send("Bot is now online and ready!")
 
