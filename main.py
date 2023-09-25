@@ -24,10 +24,12 @@ async def on_ready():
     print(f"Logged in as {bot.user.name}")
     guild_id = int(os.environ['SERVER_ID'])
     guild = bot.get_guild(guild_id)
+    responses = ["HEY HEY HEY", "LETS GET THE PARTY STARTED PEOPLE", "GUESS WHOSE BACK"]
+    selected = random.choice(responses)
     if guild is not None:
         channel = guild.get_channel(int(os.environ["CHANNEL_ID"]))
         if channel is not None:
-            await channel.send("Bot is now online and ready!")
+            await channel.send(f"@everyone {selected}")
         admin_id = int(os.environ['ADMIN_ID'])
         admin = await bot.fetch_user(admin_id)
         if admin is not None:
@@ -36,10 +38,14 @@ async def on_ready():
             print(f"Invalid admin ID: {admin_id}")
     else:
         print(f"GUILD with ID {guild_id} not found!")
+
+
 @bot.command()
 async def hello(ctx):
     """Greets the User"""
-    await ctx.send(f"Hello {ctx.author.mention}!")
+    responses = ["HI THERE", "HOLA", "HIYA", "HELLO", "HEY", "HEY THERE", "GREAT TO SEE YOU"]
+    selected = random.choice(responses)
+    await ctx.send(f"{selected} {ctx.author.mention}!")
 
 
 @bot.command()
@@ -108,6 +114,7 @@ async def getrecipe(ctx, *, query_and_nums: str):
 
         await ctx.send(embed=embed)
 
+
 # @bot.command()
 # async def ily(ctx):
 #     await ctx.author.send(f" <@{1154756034473234492}> I LOVE YOU BABY!")
@@ -115,12 +122,16 @@ async def getrecipe(ctx, *, query_and_nums: str):
 @bot.command()
 async def ily(ctx):
     try:
+        love_reponses = ["LOVE YOU BABES", "LOVE YOU WIFEY", "TE QUEIRO ESPOSA", "LOVE YOU MY LOVELIEST",
+                         "LOVE YAAA DARLING"]
+        selected = random.choice(love_reponses)
         target_user = await ctx.guild.fetch_member(int(os.environ["REEVAS_ID"]))
-        await target_user.send(f"<@{int(os.environ['REEVAS_ID'])}> I LOVE YOU MY LOVELIEST BABY BOO WIFEYYY!")
+        await target_user.send(f"<@{int(os.environ['REEVAS_ID'])}> {(selected)}!")
     except discord.errors.NotFound:
         await ctx.send("Target user not found.")
     except Exception as e:
         await ctx.send(f"An error occurred: {e}")
+
 
 if __name__ == '__main__':
     bot.run(os.environ["DISCORD_TOKEN"])
