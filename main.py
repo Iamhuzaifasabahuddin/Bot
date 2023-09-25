@@ -20,15 +20,22 @@ def quote_generator():
 
 @bot.event
 async def on_ready():
-    # This function will be called when the bot is ready
+    """Sends a message to the server that the bot is ready!"""
     print(f"Logged in as {bot.user.name}")
-    guild_id = os.environ["SERVER_ID"]
+    guild_id = int(os.environ['SERVER_ID'])
     guild = bot.get_guild(guild_id)
     if guild is not None:
-        channel = guild.get_channel(os.environ["CHANNEL_ID"])
+        channel = guild.get_channel(int(os.environ["CHANNEL_ID"]))
         if channel is not None:
             await channel.send("Bot is now online and ready!")
-
+        admin_id = int(os.environ['ADMIN_ID'])
+        admin = await bot.fetch_user(admin_id)
+        if admin is not None:
+            await admin.send("Bot is fully functional!")
+        else:
+            print(f"Invalid admin ID: {admin_id}")
+    else:
+        print(f"GUILD with ID {guild_id} not found!")
 @bot.command()
 async def hello(ctx):
     """Greets the User"""
@@ -101,9 +108,19 @@ async def getrecipe(ctx, *, query_and_nums: str):
 
         await ctx.send(embed=embed)
 
+# @bot.command()
+# async def ily(ctx):
+#     await ctx.author.send(f" <@{1154756034473234492}> I LOVE YOU BABY!")
+
 @bot.command()
 async def ily(ctx):
-    await ctx.author.send(f" <@{1154756034473234492}> I LOVE YOU BABY!")
+    try:
+        target_user = await ctx.guild.fetch_member(int(os.environ["REEVAS_ID"]))
+        await target_user.send(f"<@{int(os.environ['REEVAS_ID'])}> I LOVE YOU MY LOVELIEST BABY BOO WIFEYYY!")
+    except discord.errors.NotFound:
+        await ctx.send("Target user not found.")
+    except Exception as e:
+        await ctx.send(f"An error occurred: {e}")
 
 if __name__ == '__main__':
     bot.run(os.environ["DISCORD_TOKEN"])
