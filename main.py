@@ -128,23 +128,5 @@ async def getrecipe(ctx, *, query_and_nums: str):
         await ctx.send(embed=embed)
 
 
-# @bot.command()
-# async def ily(ctx):
-#     await ctx.author.send(f" <@{1154756034473234492}> I LOVE YOU BABY!")
-
-@bot.command()
-async def ily(ctx):
-    try:
-        love_reponses = ["LOVE YOU BABES", "LOVE YOU WIFEY", "TE QUEIRO ESPOSA", "LOVE YOU MY LOVELIEST",
-                         "LOVE YAAA DARLING"]
-        selected = random.choice(love_reponses)
-        target_user = await ctx.guild.fetch_member(int(os.environ["REEVAS_ID"]))
-        await target_user.send(f"<@{int(os.environ['REEVAS_ID'])}> {selected}!")
-    except discord.errors.NotFound:
-        await ctx.send("Target user not found.")
-    except Exception as e:
-        await ctx.send(f"An error occurred: {e}")
-
-
 if __name__ == '__main__':
     bot.run(os.environ["DISCORD_TOKEN"])
