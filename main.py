@@ -126,7 +126,7 @@ async def ily(ctx):
                          "LOVE YAAA DARLING"]
         selected = random.choice(love_reponses)
         target_user = await ctx.guild.fetch_member(int(os.environ["REEVAS_ID"]))
-        await target_user.send(f"<@{int(os.environ['REEVAS_ID'])}> {(selected)}!")
+        await target_user.send(f"<@{int(os.environ['REEVAS_ID'])}> {selected}!")
     except discord.errors.NotFound:
         await ctx.send("Target user not found.")
     except Exception as e:
