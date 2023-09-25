@@ -39,6 +39,19 @@ async def on_ready():
     else:
         print(f"GUILD with ID {guild_id} not found!")
 
+@bot.command()
+async def shutdown(ctx):
+    user_id = int(os.environ["ADMIN_ID"])
+    if ctx.author.id == user_id:
+        channel_id = int(os.environ["CHANNEL_ID"])
+        channel = bot.get_channel(channel_id)
+        responses = ["SEE YA LATER...", "LOGGING OFF PEEPS...", "UNTIL NEXT TIME..."]
+        selected = random.choice(responses)
+        await channel.send(f"{selected}")
+        await bot.close()
+    else:
+        await ctx.send("NICE TRY! YOU'RE UNAUTHORIZED!")
+
 
 @bot.command()
 async def hello(ctx):
